@@ -56,7 +56,7 @@ train_newdata = ImageDataGenerator(
     height_shift_range=0.1,  
     shear_range=0.1,         
     zoom_range=0.25,          
-    horizontal_flip=True,     
+    horizontal_flip=False,     
     fill_mode='nearest'
     )    
 
