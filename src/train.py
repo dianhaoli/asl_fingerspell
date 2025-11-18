@@ -1,22 +1,14 @@
-# %%
-!pip install numpy tensorflow scikit-learn matplotlib seaborn opencv-python pillow
-
-
-# %%
 import numpy as np
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
-
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Activation, Dense, Flatten, BatchNormalization, Conv2D, MaxPool2D, Dropout
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.metrics import categorical_crossentropy
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
-
 from sklearn.metrics import confusion_matrix, classification_report
-
 import itertools
 import os
 import shutil
@@ -25,18 +17,13 @@ import glob
 import matplotlib.pyplot as plt
 import seaborn as sns
 import warnings
-
 warnings.simplefilter(action='ignore', category=FutureWarning)
-%matplotlib inline
-
-
-# %%
 import os
 import shutil
 import random
 from glob import glob
-os.chdir('/Users/dianhaoli/Documents/data/')
 
+os.chdir('/Users/dianhaoli/Documents/data/')
 SRC_DIR = 'train'
 
 valid_ratio = 0.1
@@ -61,8 +48,6 @@ for label in os.listdir(SRC_DIR):
 
 print("Created 'valid' and 'test' folders inside /Users/dianhaoli/Documents/data/")
 
-# %%
-
 train_newdata = ImageDataGenerator(
     rescale=1./255,           
     rotation_range=30,       
@@ -71,7 +56,8 @@ train_newdata = ImageDataGenerator(
     shear_range=0.1,         
     zoom_range=0.25,          
     horizontal_flip=True,     
-    fill_mode='nearest'     
+    fill_mode='nearest'
+    )    
 
 valid_newdata = ImageDataGenerator(rescale=1./255)
 test_newdata  = ImageDataGenerator(rescale=1./255)
@@ -100,9 +86,6 @@ test_generator = test_newdata.flow_from_directory(
 
 )
 
-
-
-# %%
 model = Sequential([
     layers.Conv2D(32, (3,3), activation='relu', input_shape=(64, 64, 3)),
     layers.MaxPooling2D((2,2)),
@@ -113,29 +96,16 @@ model = Sequential([
     layers.Dense(29, activation='softmax')
 ])
 
-# %% [markdown]
-# 
-
-# %%
 model.compile(optimizer='adam',
               loss='categorical_crossentropy',
               metrics=['accuracy'])
 
-
-# %%
-
-
-# %%
 history = model.fit(
     train_generator,
     epochs=10,
     validation_data=valid_generator
 )
-
-
-# %%
 test_datagen = ImageDataGenerator(rescale=1./255)
-
 test_generator = test_datagen.flow_from_directory(
         'test',
         target_size=(64, 64),
@@ -145,8 +115,6 @@ test_generator = test_datagen.flow_from_directory(
 test_loss, test_acc = model.evaluate(test_generator, steps=test_generator.samples // test_generator.batch_size)
 print('Test loss:', test_loss)
 print('Test accuracy:', test_acc)
-
-# %%
 model.save('asl_model_v1.keras')
 
 
