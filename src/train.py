@@ -1,5 +1,6 @@
-import numpy as np
-import tensorflow as tf
+import numpy as nptest_loss, test_acc = model.evaluate(test_generator)
+print('Test loss:', test_loss)
+print('Test accuracy:', test_acc)import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
 from tensorflow.keras.models import Sequential
@@ -105,16 +106,11 @@ history = model.fit(
     epochs=10,
     validation_data=valid_generator
 )
-test_datagen = ImageDataGenerator(rescale=1./255)
-test_generator = test_datagen.flow_from_directory(
-        'test',
-        target_size=(64, 64),
-        batch_size=32,
-        class_mode='categorical')
 
 test_loss, test_acc = model.evaluate(test_generator, steps=test_generator.samples // test_generator.batch_size)
 print('Test loss:', test_loss)
 print('Test accuracy:', test_acc)
+
 model.save('asl_model_v1.keras')
 
 
